@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 GitHub Discussions
+    url: https://github.com/m96-chan/ProcTap/discussions
+    about: Ask questions, share ideas, or discuss ProcTap with the community
+  - name: 📖 Documentation
+    url: https://github.com/m96-chan/ProcTap/blob/main/README.md
+    about: Read the official documentation, examples, and guides
+  - name: 🔍 Existing Issues
+    url: https://github.com/m96-chan/ProcTap/issues
+    about: Search existing issues before creating a new one

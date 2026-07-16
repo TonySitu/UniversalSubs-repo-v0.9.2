@@ -1,0 +1,123 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "proc-tap"
+dynamic = ["version"]
+description = "Cross-platform process-level audio capture library"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+authors = [
+    {name = "m96-chan", email = "y_harada@technologies.moe"}
+]
+keywords = ["audio", "capture", "wasapi", "windows", "linux", "macos", "pulseaudio", "coreaudio", "process", "loopback"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: Microsoft :: Windows :: Windows 10",
+    "Operating System :: Microsoft :: Windows :: Windows 11",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS",
+    "Operating System :: MacOS :: MacOS X",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: C++",
+    "Topic :: Multimedia :: Sound/Audio :: Capture/Recording",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+# Platform-specific dependencies (automatically installed based on OS)
+dependencies = [
+    "numpy>=1.20.0",
+    "scipy>=1.7.0",
+    "pulsectl>=23.5.0; sys_platform == 'linux'",
+    "pyobjc-core>=9.0; sys_platform == 'darwin'",
+    "pyobjc-framework-CoreAudio>=9.0; sys_platform == 'darwin'",
+]
+
+[project.urls]
+Homepage = "https://github.com/m96-chan/ProcTap"
+Repository = "https://github.com/m96-chan/ProcTap"
+Issues = "https://github.com/m96-chan/ProcTap/issues"
+
+[project.scripts]
+proctap = "proctap.__main__:main"
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "mypy",
+    "types-setuptools",
+    "types-psutil",
+    "scipy-stubs",
+]
+docs = [
+    "mkdocs-material>=9.0.0",
+    "mkdocstrings[python]>=0.24.0",
+]
+linux = [
+    "pulsectl>=23.5.0",
+]
+# Contrib modules with optional dependencies
+contrib = [
+    "faster-whisper>=1.0.0",
+]
+# High-quality resampling using libsamplerate (optional, scipy fallback available)
+# Note: samplerate package may fail to build on Windows with Python 3.13+ due to
+# C compiler compatibility issues (as of 2025-01). Non-Windows platforms and
+# Python <3.13 should work fine. If installation fails, scipy's polyphase
+# filtering provides excellent quality as a fallback (though 30-50% slower).
+# This is an optional optimization - the converter works well without it.
+hq-resample = [
+    "samplerate>=0.1.0; python_version < '3.13' or sys_platform != 'win32'",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["proctap*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "-v",
+    "--tb=short",
+]
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+ignore_missing_imports = false
+files = ["src"]
+
+# Platform-specific and optional dependencies
+[[tool.mypy.overrides]]
+module = [
+    "pulsectl",
+    "pulsectl.*",
+    "discord",
+    "discord.*",
+    "faster_whisper",
+    "faster_whisper.*",
+    "samplerate",
+    "samplerate.*",
+    "Foundation",
+    "Foundation.*",
+    "CoreAudio",
+    "CoreAudio.*",
+]
+ignore_missing_imports = true
+
+[tool.setuptools.dynamic]
+version = {attr = "proctap._version.__version__"}

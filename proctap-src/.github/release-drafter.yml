@@ -1,0 +1,55 @@
+name-template: "v$NEXT_PATCH_VERSION"
+tag-template: "v$NEXT_PATCH_VERSION"
+
+categories:
+  - title: "🚀 Features"
+    labels:
+      - "feature"
+      - "enhancement"
+  - title: "🐛 Bug Fixes"
+    labels:
+      - "bug"
+      - "fix"
+  - title: "🧰 Maintenance"
+    labels:
+      - "chore"
+      - "refactor"
+      - "ci"
+
+change-template: "- $TITLE (#$NUMBER) by @$AUTHOR"
+no-changes-template: "No significant changes."
+
+template: |
+  ## Changes
+
+  $CHANGES
+
+  ## Installation
+
+  ```bash
+  pip install proc-tap
+  - PR に `feature`, `bug`, `ci` とか label をつけておくと自動でカテゴリ分けされる
+  ```
+
+### 4-2. release-drafter 用 Workflow
+
+name: Release Drafter
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, reopened, synchronize, edited, closed]
+
+jobs:
+  update_release_draft:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Run Release Drafter
+        uses: release-drafter/release-drafter@v6
+        with:
+          config-name: release-drafter.yml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,8 @@
+# NEVER commit this - it contains your Gemini API key in plain text
+universalsubs_config.json
+
+__pycache__/
+*.pyc
+.idea/
+venv/
+.venv/

@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "universalsubs"
+dynamic = ["version"]
+description = "Live translated subtitles over any game or app — any language in, your language out."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Tony" }]
+keywords = ["subtitles", "translation", "captions", "overlay", "gaming", "deepgram", "gemini"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Win32 (MS Windows)",
+    "Operating System :: Microsoft :: Windows :: Windows 10",
+    "Operating System :: Microsoft :: Windows :: Windows 11",
+    "Programming Language :: Python :: 3",
+    "Topic :: Multimedia :: Sound/Audio :: Speech",
+]
+dependencies = [
+    "numpy>=1.26",
+    "requests>=2.31",
+    "websocket-client>=1.7",
+    "keyring>=24.0",
+    "pyaudiowpatch>=0.2.12.6; sys_platform == 'win32'",
+    "pycaw>=20240210; sys_platform == 'win32'",
+]
+# NOTE: 'proctap' (optional per-app capture, Windows 11) is not on PyPI and
+# therefore cannot be declared here. It is installed separately from the
+# bundled wheel by install_and_run.bat, or manually by the user.
+
+[project.urls]
+Homepage = "https://github.com/CHANGEME/universalsubs"
+
+[project.gui-scripts]
+universalsubs = "universalsubs.app:main"
+
+[tool.setuptools.dynamic]
+version = { attr = "universalsubs.__version__" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
